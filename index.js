@@ -39,7 +39,46 @@ app.get('/api/counter', async (req, res) => {
         res.status(500).json({ message: 'Server Error' });
     }
 });
-
+app.post('/api/counter/increment/:variable', async (req, res) => {
+    try {
+        const { variable } = req.params;
+        let counter = await Counter.findOne();
+        if (!counter) {
+            counter = new Counter();
+        }
+        // counter.count++;
+        if (variable === 'count1') {
+            counter.count1++;
+          } else if (variable === 'count') {
+            counter.count++;
+          }
+        await counter.save();
+        res.json(counter);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+app.post('/api/counter/decrement/:variable', async (req, res) => {
+    try {
+        const { variable } = req.params;
+        let counter = await Counter.findOne();
+        if (!counter) {
+            counter = new Counter();
+        }
+        // counter.count++;
+        if (variable === 'count1') {
+            counter.count1--;
+          } else if (variable === 'count') {
+            counter.count--;
+          }
+        await counter.save();
+        res.json(counter);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
 app.post('/api/counter/increment', async (req, res) => {
     try {
         let counter = await Counter.findOne();
